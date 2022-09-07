@@ -4,7 +4,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. backup android apps - `backup_and_restore_android_apps`
 
-        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" ${HOME}/backup-sony_xa1/apps/
+        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/"
 
 1. find duplicates in the directory with backed up apps - `duplicate_finder`
 
@@ -42,7 +42,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Check the multipart archive with `7z l Phone.7z.001 | less`
 
-    Afterwards delete the `Phone.7z.*` files and all directories inside `${HOME}/backup-sony_xa1/Phone/` to save space on the drive.
+    Afterwards delete the `Phone.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone/"` to save space on the drive.
 
         find "${HOME}" -mindepth 1 -maxdepth 1 -name "Phone.7z.*"
         find "${HOME}" -mindepth 1 -maxdepth 1 -name "Phone.7z.*" -exec gio trash "{}" \;
@@ -92,7 +92,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     1. Delete the package files
 
-            sudo rm -rf /var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/
+            sudo rm -rf "/var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/"
 
         Gained free space on disk, thus less time during cloning.
 
@@ -114,7 +114,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     1. Create the UEFI bootable USB drive with Clonezilla
 
-            ${HOME}/git/kyberdrb/clonezilla_bootable_uefi_usb_creator/make_clonezilla_usb.sh sdb
+            "${HOME}/git/kyberdrb/clonezilla_bootable_uefi_usb_creator/make_clonezilla_usb.sh" sdb
 
     After the USB had been prepared, close up all work, reboot, invoke the boot menu and select the USB drive with Clonezilla with an UEFI boot mode. Then continue as usual.
 
