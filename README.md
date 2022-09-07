@@ -75,10 +75,26 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. `clean_pacman_cache_dir` - to reduce the backup size for Clonezilla as much as possible
 
-        "${HOME}/git/kyberdrb/clean_pacman_cache_dir/build-release.sh"
-        sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
-        
-        sudo rm -rf /var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/
+    1. Build it
+
+            "${HOME}/git/kyberdrb/clean_pacman_cache_dir/build-release.sh"
+    
+    1. Make an overview of the packages
+
+            "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
+
+    1. Check the logs. The program will tell you where they are.
+    1. Now run the program again.
+
+            sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
+
+        Check the logs again, if you want to see what just happened.
+
+    1. Delete the package files
+
+            sudo rm -rf /var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/
+
+        Gained free space on disk, thus less time during cloning.
 
 1. `clonezilla_bootable_uefi_usb_creator` - backup entire harddrive by clonning
 
