@@ -122,13 +122,13 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. Update all nonignored packages
 
-        ${HOME}/git/kyberdrb/update_arch/update_arch.sh
+        "${HOME}/git/kyberdrb/update_arch/update_arch.sh"
 
 1. Reboot
 1. Check functionalities
 1. After successful boot and functionality check, update the rest
 
-        ${HOME}/git/kyberdrb/update_arch/update_all_installed_ignored_packages.sh
+        "${HOME}/git/kyberdrb/update_arch/update_all_installed_ignored_packages.sh"
 
 1. Reboot
 1. Check functionalities
