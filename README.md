@@ -4,27 +4,39 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. backup android apps - `backup_and_restore_android_apps`
 
-        ${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh ${HOME}/backup-sony_xa1/apps/
+        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" ${HOME}/backup-sony_xa1/apps/
 
 1. find duplicates in the directory with backed up apps - `duplicate_finder`
 
-        ${HOME}/git/kyberdrb/duplicate_finder/build-release.sh
-        ${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder ${HOME}/backup-sony_xa1/apps/
+        "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh"
+        "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/"
+
+    Then delete the entire directory `DUPLICATE_FILES` in the `apps` directory.
+
+        rm -rf "${HOME}/backup-sony_xa1/apps/DUPLICATE_FILES/"
+
+1. compress the `apps` directory
+
+        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on apps.7z "${HOME}/backup-sony_xa1/apps/" && date
+
+    Then upload the archive to the cloud, replacing current backup.
 
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
 
-        ${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh
+        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh"
+
+1. move contents of usual text files with the computer
+1. backup contacts from the `Contacts` app into `vcf` format
 
 1. `Android_tutorials` - backup android files...
 
         cd "${HOME}"
-        rm -rf ${HOME}/backup-sony_xa1/Phone/*
-        adb pull /storage/sdcard0/. ${HOME}/backup-sony_xa1/Phone/
+        rm -rf "${HOME}/backup-sony_xa1/Phone/*"
+        date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone/" && date
 
     ...compress them to an archive...
 
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g Phone.7z ${HOME}/backup-sony_xa1/Phone/ && date
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on apps_and_multi_apps.7z ${HOME}/backup-sony_xa1/apps/ ${HOME}/backup-sony_xa1/multi_apps/ && date
+        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g Phone.7z "${HOME}/backup-sony_xa1/Phone/" && date
 
     ...then upload the archive to the cloud, part-by-part, respecting the 4GB file limit e.g. on Terabox.  
 
@@ -49,22 +61,23 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. Check the status of every repository
 
-        ${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh "${HOME}/git/"
+        "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/"
 
         Commit & Push all changes in all modified repositories one-by-one and manually, to have things under control
 
 1. After pushing all changes, check the status again, to make sure all repositories are in consistent and up-to-date state
 
-        ${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh "${HOME}/git/"
+        "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/"
 
 1. Pull all changes from the upstream for all repositories to sync changes to the local machine for files in such repositories that I usually update online via GitHub editor
 
-        ${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh "${HOME}/git/"
+        "${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh" "${HOME}/git/"
 
 1. `clean_pacman_cache_dir` - to reduce the backup size for Clonezilla as much as possible
 
-        ${HOME}/git/kyberdrb/clean_pacman_cache_dir/build-release.sh
-        sudo ${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir
+        "${HOME}/git/kyberdrb/clean_pacman_cache_dir/build-release.sh"
+        sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
+        
         sudo rm -rf /var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/
 
 1. `clonezilla_bootable_uefi_usb_creator` - backup entire harddrive by clonning
