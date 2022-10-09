@@ -21,6 +21,11 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Then upload the archive to the cloud, replacing current backup.
     
+    After the upload is complete, delete the local files
+    
+        rm -rf "${HOME}/backup-sony_xa1/apps.7z"
+        rm -rf "${HOME}/backup-sony_xa1/apps/"
+    
 1. backup contacts from the `Contacts` app into `vcf` format in the root directory of the internal phone storage.
     
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
@@ -49,8 +54,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Afterwards delete the `Phone-complete.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone-complete/"` to save space on the drive.
 
-        rm -rf "${HOME}/backup-sony_xa1/Phone-complete.7z.*"
-        rm -rf "${HOME}/backup-sony_xa1/Phone-complete/"
+        rm -rf "${HOME}"/backup-sony_xa1/Phone-complete.7z.*
+        rm -rf "${HOME}"/backup-sony_xa1/Phone-complete/
 
     Notes on `Terabox` limitations:
     - Max size for uploaded file: 4GB
