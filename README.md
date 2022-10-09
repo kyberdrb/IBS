@@ -63,7 +63,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/"
 
-        Commit & Push all changes in all modified repositories one-by-one and manually, to have things under control
+    Commit & Push all changes in all modified repositories one-by-one and manually, to have things under control
 
 1. After pushing all changes, check the status again, to make sure all repositories are in consistent and up-to-date state
 
