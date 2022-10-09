@@ -34,15 +34,14 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. `Android_tutorials` - backup android files...
 
-        cd "${HOME}"
-        rm -rf "${HOME}/backup-sony_xa1/Phone/*"
-        date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone/" && date
+        mkdir --parents "${HOME}/backup-sony_xa1/Phone-complete/"
+        date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone-complete/" && date
         
     _note:the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
 
     ...compress them to an archive...
 
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g Phone.7z "${HOME}/backup-sony_xa1/Phone/" && date
+        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g Phone.7z "${HOME}/backup-sony_xa1/Phone-complete/" && date
 
     ...then upload the archive to the cloud, part-by-part, respecting the 4GB file limit e.g. on Terabox.  
 
@@ -50,15 +49,9 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Afterwards delete the `Phone.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone/"` to save space on the drive.
 
-        find "${HOME}" -mindepth 1 -maxdepth 1 -name "Phone.7z.*"
-        find "${HOME}" -mindepth 1 -maxdepth 1 -name "Phone.7z.*" -exec gio trash "{}" \;
+        find "${HOME}" -mindepth 1 -maxdepth 1 -name "Phone-complete.7z.*" -exec gio trash "{}" \;
 
-        find "${HOME}/backup-sony_xa1/Phone/" -maxdepth 1 -mindepth 1 -type d
-        find "${HOME}/backup-sony_xa1/Phone/" -maxdepth 1 -mindepth 1 -type d -exec gio trash "{}" \;
-
-        gio trash apps_and_multi_apps.7z
-
-    Notes on Terabox limitations:
+    Notes on `Terabox` limitations:
     - Max size for uploaded file: 4GB
     - Max number of files uploaded at once: 500
     - The download of multi-file has an upper limit of 500MB, while the download of a single file is not limited
