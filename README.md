@@ -37,19 +37,20 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         mkdir --parents "${HOME}/backup-sony_xa1/Phone-complete/"
         date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone-complete/" && date
         
-    _note:the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
+    _note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
 
     ...compress them to an archive...
 
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g Phone.7z "${HOME}/backup-sony_xa1/Phone-complete/" && date
+        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g "${HOME}/backup-sony_xa1/Phone-complete.7z" "${HOME}/backup-sony_xa1/Phone-complete/" && date
 
     ...then upload the archive to the cloud, part-by-part, respecting the 4GB file limit e.g. on Terabox.  
 
-    Check the multipart archive with `7z l Phone.7z.001 | less`
+    Check the multipart archive with `7z l Phone-complete.7z.001 | less`
 
-    Afterwards delete the `Phone.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone/"` to save space on the drive.
+    Afterwards delete the `Phone-complete.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone-complete/"` to save space on the drive.
 
-        find "${HOME}" -mindepth 1 -maxdepth 1 -name "Phone-complete.7z.*" -exec gio trash "{}" \;
+        rm -rf "${HOME}/backup-sony_xa1/Phone-complete.7z.*"
+        rm -rf "${HOME}/backup-sony_xa1/Phone-complete/"
 
     Notes on `Terabox` limitations:
     - Max size for uploaded file: 4GB
