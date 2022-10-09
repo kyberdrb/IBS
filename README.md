@@ -6,7 +6,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/"
 
-1. find duplicates in the directory with backed up apps - `duplicate_finder`
+1. [OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED] find duplicates in the directory with backed up apps - `duplicate_finder`
 
         "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh"
         "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/"
@@ -17,22 +17,25 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. compress the `apps` directory
 
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on apps.7z "${HOME}/backup-sony_xa1/apps/" && date
+        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/apps.7z" "${HOME}/backup-sony_xa1/apps/" && date
 
     Then upload the archive to the cloud, replacing current backup.
-
+    
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
 
         "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh"
 
-1. move contents of usual text files with the computer
-1. backup contacts from the `Contacts` app into `vcf` format
+1. copy regulary used text files with the computer
+
+        adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/"
 
 1. `Android_tutorials` - backup android files...
 
         cd "${HOME}"
         rm -rf "${HOME}/backup-sony_xa1/Phone/*"
         date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone/" && date
+        
+    _note:the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
 
     ...compress them to an archive...
 
