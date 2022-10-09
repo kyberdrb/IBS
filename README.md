@@ -21,6 +21,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Then upload the archive to the cloud, replacing current backup.
     
+1. backup contacts from the `Contacts` app into `vcf` format
+    
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
 
         "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh"
