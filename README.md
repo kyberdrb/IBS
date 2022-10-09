@@ -29,6 +29,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. copy regulary used text files with the computer
 
+        gio trash "/home/laptop/backup-sony_xa1/Phone/*"
         adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/"
 
 1. `Android_tutorials` - backup android files...
