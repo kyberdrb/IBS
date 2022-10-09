@@ -21,7 +21,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Then upload the archive to the cloud, replacing current backup.
     
-1. backup contacts from the `Contacts` app into `vcf` format
+1. backup contacts from the `Contacts` app into `vcf` format in the root directory of the internal phone storage.
     
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
 
