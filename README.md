@@ -88,40 +88,45 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
             "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
 
-    1. Check the logs. The program will tell you where they are.
-    1. Now run the program again.
+    1. Check the logs with following command. The program will tell you where the logs are. For example:
+    
+                less "${HOME}/.config/cpmcd/logs/2022_10_10-14_23_52.log"
+    
+    1. Now run the program again, but with elevated priviledges, to allow moving files:
 
             sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
 
-        Check the logs again, if you want to see what just happened.
+        Check the logs again, if you want to see what files had been moved.
+        
+            less "${HOME}/.config/cpmcd/logs/2022_10_10-14_38_09.log"
 
-    1. Delete the package files
+    1. Delete the package files directory:
+
+        First, check free space with
+        
+            df -h
+            
+        Delete the package files directory
 
             sudo rm -rf "/var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/"
 
-        Gained free space on disk, thus less time during cloning.
+        Gained free space on disk, thus less time during cloning. Check again with
+        
+            df -h
 
 1. `clonezilla_bootable_uefi_usb_creator` - backup entire harddrive by clonning
 
     1. Execute command
 
-            lsblk
-    
-    1. Look at the output of the command
-
-    1. Insert a USB drive the Clonezilla will boot from
-
-    1. Execute command
-
-            lsblk
-
-        Look at the output of the command again and see what entries had been added - the added entry is the USB drive. Let's say it's listed under the name 'sdb'
+            "${HOME}/git/kyberdrb/clonezilla_bootable_uefi_usb_creator/make_clonezilla_usb.sh"
+            
+        Use commands from help to make an overview and select the USB drive name that you want to install Clonezilla onto.
 
     1. Create the UEFI bootable USB drive with Clonezilla
 
             "${HOME}/git/kyberdrb/clonezilla_bootable_uefi_usb_creator/make_clonezilla_usb.sh" sdb
 
-    After the USB had been prepared, close up all work, reboot, invoke the boot menu and select the USB drive with Clonezilla with an UEFI boot mode. Then continue as usual.
+    After the USB had been prepared, close up all work, reboot, invoke the boot menu and select the USB drive with Clonezilla with an UEFI boot mode. I like to do a disk clone for immediately swappable drive.
 
 ## Update suite - `update_arch`
 
