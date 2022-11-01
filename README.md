@@ -4,9 +4,13 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. backup android apps - `backup_and_restore_android_apps`
 
-        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/"
+    Enable `Debugging mode`.
 
-1. [OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED] find duplicates in the directory with backed up apps - `duplicate_finder`
+        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/"
+        
+    Disable `Debugging mode`.
+
+1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
 
         "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh"
         "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/"
