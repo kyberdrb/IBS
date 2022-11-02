@@ -6,14 +6,14 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Enable `Debugging mode`.
 
-        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/"
+        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/" && date
         
     Disable `Debugging mode`.
 
 1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
 
-        "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh"
-        "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/"
+        date && time "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh" && date
+        date && time "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/" && date
 
     Then delete the entire directory `DUPLICATE_FILES` in the `apps` directory.
 
@@ -34,27 +34,43 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
 
-        "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh"
+    Enable `Debugging mode`.
+
+        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh" && date
+        
+    Disable `Debugging mode`.
 
 1. copy regulary used text files with the computer
 
-        gio trash "/home/laptop/backup-sony_xa1/Phone/*"
-        adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/"
+    Enable `Debugging mode`.
 
-1. `Android_tutorials` - backup android files...
+        gio trash "/home/laptop/backup-sony_xa1/Phone/*"
+        date && time adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/" && date
+        
+    Disable `Debugging mode`.
+
+1. `Android_tutorials` - files backup
+
+    Enable `Debugging mode`.
+
+    Back up files:
 
         mkdir --parents "${HOME}/backup-sony_xa1/Phone-complete/"
         date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone-complete/" && date
         
     _note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
+    
+    Disable `Debugging mode`.
 
-    ...compress them to an archive...
+    Compress files to an archive:
 
         date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g "${HOME}/backup-sony_xa1/Phone-complete.7z" "${HOME}/backup-sony_xa1/Phone-complete/" && date
 
-    ...then upload the archive to the cloud, part-by-part, respecting the 4GB file limit e.g. on Terabox.  
+    Upload the archive to the cloud, part-by-part, respecting the 4GB file limit e.g. on Terabox.
 
-    Check the multipart archive with `7z l Phone-complete.7z.001 | less`
+    Check the multipart archive with
+    
+        7z l Phone-complete.7z.001 | less
 
     Afterwards delete the `Phone-complete.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone-complete/"` to save space on the drive.
 
@@ -70,27 +86,27 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. Check the status of every repository
 
-        "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/"
+        date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/" && date
 
     Commit & Push all changes in all modified repositories one-by-one and manually, to have things under control
 
 1. After pushing all changes, check the status again, to make sure all repositories are in consistent and up-to-date state
 
-        "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/"
+        date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/" && date
 
 1. Pull all changes from the upstream for all repositories to sync changes to the local machine for files in such repositories that I usually update online via GitHub editor
 
-        "${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh" "${HOME}/git/"
+        date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh" "${HOME}/git/" && date
 
 1. `clean_pacman_cache_dir` - to reduce the backup size for Clonezilla as much as possible
 
     1. Build it
 
-            "${HOME}/git/kyberdrb/clean_pacman_cache_dir/build-release.sh"
+            date && time "${HOME}/git/kyberdrb/clean_pacman_cache_dir/build-release.sh" && date
     
     1. Make an overview of the packages
 
-            "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
+            date && time "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir" && date
 
     1. Check the logs with following command. The program will tell you where the logs are. For example:
     
@@ -98,7 +114,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
     1. Now run the program again, but with elevated priviledges, to allow moving files:
 
-            sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir"
+            date && time sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir" && date
 
         Check the logs again, if you want to see what files had been moved.
         
@@ -112,7 +128,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
             
         Delete the package files directory
 
-            sudo rm -rf "/var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/"
+            date && time sudo rm -rf "/var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/" && date
 
         Gained free space on disk, thus less time during cloning. Check again with
         
@@ -128,7 +144,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     1. Create the UEFI bootable USB drive with Clonezilla
 
-            "${HOME}/git/kyberdrb/clonezilla_bootable_uefi_usb_creator/make_clonezilla_usb.sh" sdb
+            date && time "${HOME}/git/kyberdrb/clonezilla_bootable_uefi_usb_creator/make_clonezilla_usb.sh" sdb && date
 
     After the USB had been prepared, close up all work, reboot, invoke the boot menu and select the USB drive with Clonezilla with an UEFI boot mode. I like to do a disk clone for immediately swappable drive.
 
@@ -136,13 +152,13 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
 1. Update all nonignored packages
 
-        "${HOME}/git/kyberdrb/update_arch/update_arch.sh"
+        date && time "${HOME}/git/kyberdrb/update_arch/update_arch.sh" && date
 
 1. Reboot
 1. Check functionalities
 1. After successful boot and functionality check, update the rest
 
-        "${HOME}/git/kyberdrb/update_arch/update_all_installed_ignored_packages.sh"
+        date && time "${HOME}/git/kyberdrb/update_arch/update_all_installed_ignored_packages.sh" && date
 
 1. Reboot
 1. Check functionalities
