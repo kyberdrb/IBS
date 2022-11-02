@@ -44,10 +44,21 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Enable `Debugging mode`.
 
-        gio trash "/home/laptop/backup-sony_xa1/Phone/*"
+        gio trash "${HOME}/backup-sony_xa1/Phone/*"
+        mkdir --parents "${HOME}/backup-sony_xa1/Phone/"
         date && time adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/" && date
         
+    _Note: `adb pull` mode is preferred over MTP for copying because it preserves the timestamps and metadata of the files._
+        
     Disable `Debugging mode`.
+    
+    Upload the files to the cloud: Either directly [PREFERRED] one-by-one in bulk mode via multiple-selection upload...
+    
+    [OPTIONAL] ...or by compressing them with:
+    
+        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/docs_from_root_dir.7z" "${HOME}/backup-sony_xa1/Phone/*" && date
+        
+    and uploading them as one file.
 
 1. `Android_tutorials` - files backup
 
@@ -55,10 +66,11 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Back up files:
 
+        gio trash "${HOME}/backup-sony_xa1/Phone-complete/*"
         mkdir --parents "${HOME}/backup-sony_xa1/Phone-complete/"
         date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone-complete/" && date
         
-    _note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
+    _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
     
     Disable `Debugging mode`.
 
