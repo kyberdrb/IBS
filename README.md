@@ -10,27 +10,29 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         
     Disable `Debugging mode`.
 
-1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
+    1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
 
-        date && time "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh" && date
-        date && time "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/" && date
+            date && time "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh" && date
+            date && time "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/" && date
 
-    Then delete the entire directory `DUPLICATE_FILES` in the `apps` directory.
+        Then delete the entire directory `DUPLICATE_FILES` in the `apps` directory.
 
-        rm -rf "${HOME}/backup-sony_xa1/apps/DUPLICATE_FILES/"
+            rm -rf "${HOME}/backup-sony_xa1/apps/DUPLICATE_FILES/"
 
-1. compress the `apps` directory
+    1. compress the `apps` directory
 
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/apps.7z" "${HOME}/backup-sony_xa1/apps/" && date
+            date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/apps.7z" "${HOME}/backup-sony_xa1/apps/" && date
+            
+    1. generate checksums to verify backup integrity in case of restoring the backup
 
-    Then upload the archive to the cloud, replacing current backup.
-    
-    After the upload is complete, delete the local files
-    
-        rm -rf "${HOME}/backup-sony_xa1/apps.7z"
-        rm -rf "${HOME}/backup-sony_xa1/apps/"
-    
-1. backup contacts from the `Contacts` app into `vcf` format in the root directory of the internal phone storage.
+            sha256sum "${HOME}/backup-sony_xa1/apps.7z" | tee "${HOME}/backup-sony_xa1/apps.7z.sha256sum"
+
+    1. upload the archive with its checksum to the cloud, replacing current backup
+
+        After the upload is complete, delete the local files
+
+            rm -rf "${HOME}/backup-sony_xa1/apps.7z"
+            rm -rf "${HOME}/backup-sony_xa1/apps/"
     
 1. backup android browser tabs - `backup_and_restore_browser_tabs`
 
@@ -39,12 +41,20 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh" && date
         
     Disable `Debugging mode`.
+    
+1. backup contacts from the `Contacts` app into `vcf` format in the root directory of the internal phone storage.
+
+1. backup whatsapp, viber, messenger, signal chat history
+    - Signal: screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
+
+1. backup SMS and call history e.g. with app `SMS Backup & Restore`
+    - set up local backup onto custom location - the root directory in internal memory
 
 1. copy regulary used text files with the computer
 
     Enable `Debugging mode`.
 
-        gio trash "${HOME}/backup-sony_xa1/Phone/*"
+        gio trash "${HOME}/backup-sony_xa1/Phone/"
         mkdir --parents "${HOME}/backup-sony_xa1/Phone/"
         date && time adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/" && date
         
@@ -54,7 +64,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
     Upload the files to the cloud: Either directly [PREFERRED] one-by-one in bulk mode via multiple-selection upload...
     
-    [OPTIONAL] ...or by compressing them with:
+    [OPTIONAL] ...or when copying the files via MTP instad of `adb pull` by compressing them with:
     
         date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/docs_from_root_dir.7z" "${HOME}/backup-sony_xa1/Phone/*" && date
         
@@ -66,7 +76,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Back up files:
 
-        gio trash "${HOME}/backup-sony_xa1/Phone-complete/*"
+        gio trash "${HOME}/backup-sony_xa1/Phone-complete/"
         mkdir --parents "${HOME}/backup-sony_xa1/Phone-complete/"
         date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone-complete/" && date
         
@@ -78,11 +88,30 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g "${HOME}/backup-sony_xa1/Phone-complete.7z" "${HOME}/backup-sony_xa1/Phone-complete/" && date
 
-    Upload the archive to the cloud, part-by-part, respecting the 4GB file limit e.g. on Terabox.
-
     Check the multipart archive with
     
         7z l Phone-complete.7z.001 | less
+        
+    Generate checksums for each part of the archive
+    
+        find "${HOME}/backup-sony_xa1/" -name "Phone-complete.7z*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+
+        80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-sony_xa1/Phone-complete.7z.001
+        854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-sony_xa1/Phone-complete.7z.002
+
+        cat "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+
+        80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-sony_xa1/Phone-complete.7z.001
+        854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-sony_xa1/Phone-complete.7z.002
+
+    Verify checksums
+
+        sha256sum --check "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+
+        /home/laptop/backup-sony_xa1/Phone-complete.7z.001: OK
+        /home/laptop/backup-sony_xa1/Phone-complete.7z.002: OK
+
+    Upload the archives with the checksums to the cloud, respecting the 4GB file limit e.g. on Terabox.
 
     Afterwards delete the `Phone-complete.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone-complete/"` to save space on the drive.
 
