@@ -42,10 +42,14 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         
     Disable `Debugging mode`.
     
-1. backup contacts from the `Contacts` app into `vcf` format in the root directory of the internal phone storage.
+1. backup contacts
+    - Open `Contacts` app and export all contacts into `vcf` format to the root directory of the internal phone storage.
 
-1. backup whatsapp, viber, messenger, signal chat history
-    - Signal: screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
+1. Backup chat history for instant messaging apps
+    - WhatsApp - TODO
+    - Viber - TODO
+    - Messenger - TODO
+    - Signal: TODO + screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
 
 1. backup SMS and call history e.g. with app `SMS Backup & Restore`
     - set up local backup onto custom location - the root directory in internal memory
@@ -94,7 +98,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         
     Generate checksums for each part of the archive
     
-        find "${HOME}/backup-sony_xa1/" -name "Phone-complete.7z*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+        find "${HOME}/backup-sony_xa1/" -name "Phone-complete.7z.[0-9]*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
 
         80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-sony_xa1/Phone-complete.7z.001
         854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-sony_xa1/Phone-complete.7z.002
