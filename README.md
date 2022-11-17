@@ -45,11 +45,17 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 1. backup contacts
     - Open `Contacts` app and export all contacts into `vcf` format to the root directory of the internal phone storage.
 
-1. Backup chat history for instant messaging apps
-    - WhatsApp - TODO
-    - Viber - TODO
-    - Messenger - TODO
-    - Signal: TODO + screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
+1. Manually backup chat history for instant messaging apps
+    - WhatsApp: three dots -> Settings -> Chats -> Chat Backup, then click on `Back up` button to manually invoke the backup. I had `End-to-end encryption` option disabled.
+        - https://duckduckgo.com/?q=backup+whatsapp&ia=web
+        - https://faq.whatsapp.com/744445782709185/?cms_platform=android
+    - Viber - three dots in the bottom bar -> Settings -> Account -> Viber Backup, check options `Include photos` and `Include videos`, select the account for backup, then click on `Back up now` button
+        - https://duckduckgo.com/?q=backup+viber&ia=web
+        - https://mobiletrans.wondershare.com/viber/complete-viber-backup.html
+    - Messenger - not necessary: the chat history is automatically loaded at the first login onto the new device
+        - click on the avatar in the top left corner -> Settings -> Download copy
+    - Signal: backup successfully created, but the recovery failed
+        - screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
 
 1. backup SMS and call history e.g. with app `SMS Backup & Restore`
     - set up local backup onto custom location - the root directory in internal memory
