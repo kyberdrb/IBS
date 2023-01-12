@@ -21,9 +21,9 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     1. compress the `apps` directory
 
-            date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/apps.7z" "${HOME}/backup-sony_xa1/apps/" && date
+            date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-sony_xa1/apps.7z" "${HOME}/backup-sony_xa1/apps/" && date
             
-    1. generate checksums to verify backup integrity in case of restoring the backup
+    1. generate checksums to verify backup integrity in case of restoring the backup (`Linux_utils_and_gists/generate_checksum "apps.7z"`)
 
             sha256sum "${HOME}/backup-sony_xa1/apps.7z" | tee "${HOME}/backup-sony_xa1/apps.7z.sha256sum"
 
@@ -76,7 +76,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
     [OPTIONAL] ...or when copying the files via MTP instad of `adb pull` by compressing them with:
     
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on "${HOME}/backup-sony_xa1/docs_from_root_dir.7z" "${HOME}/backup-sony_xa1/Phone/*" && date
+        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-sony_xa1/docs_from_root_dir.7z" "${HOME}/backup-sony_xa1/Phone/*" && date
         
     and uploading them as one file.
 
@@ -96,13 +96,13 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Compress files to an archive:
 
-        date && time 7z a -t7z -m0=lzma2 -mx=9 -mfb=273 -md=64m -ms=on -v4g "${HOME}/backup-sony_xa1/Phone-complete.7z" "${HOME}/backup-sony_xa1/Phone-complete/" && date
+        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-sony_xa1/Phone-complete.7z" "${HOME}/backup-sony_xa1/Phone-complete/" && date
 
     Check the multipart archive with
     
         7z l Phone-complete.7z.001 | less
         
-    Generate checksums for each part of the archive
+    Generate checksums for each part of the archive (`Linux_utils_and_gists/generate_checksums_for_split_archive.sh "Phone-complete.7z.001"`)
     
         find "${HOME}/backup-sony_xa1/" -name "Phone-complete.7z.[0-9]*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
 
