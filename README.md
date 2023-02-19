@@ -6,35 +6,43 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Enable `Debugging mode`.
 
-        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-sony_xa1/apps/" && date
+        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-moto_edge_30_pro/apps/" && date
         
     Disable `Debugging mode`.
 
     1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
 
             date && time "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh" && date
-            date && time "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-sony_xa1/apps/" && date
+            date && time "${HOME}/git/kyberdrb/duplicate_finder/cmake-build-release/duplicate_finder" "${HOME}/backup-moto_edge_30_pro/apps/" && date
 
         Then delete the entire directory `DUPLICATE_FILES` in the `apps` directory.
 
-            rm -rf "${HOME}/backup-sony_xa1/apps/DUPLICATE_FILES/"
+            rm -rf "${HOME}/backup-moto_edge_30_pro/apps/DUPLICATE_FILES/"
 
     1. compress the `apps` directory
 
-            date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-sony_xa1/apps.7z" "${HOME}/backup-sony_xa1/apps/" && date
-            
+            date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/apps.7z" "${HOME}/backup-moto_edge_30_pro/apps/" && date
+
+    1. Check the multipart archive with
+    
+            7z l apps.7z.001 | head --lines=40
+
     1. generate checksums to verify backup integrity in case of restoring the backup (`Linux_utils_and_gists/generate_checksum "apps.7z"`)
 
-            sha256sum "${HOME}/backup-sony_xa1/apps.7z" | tee "${HOME}/backup-sony_xa1/apps.7z.sha256sum"
+            find "${HOME}/backup-moto_edge_30_pro/" -type f -name "apps.7z*" -exec sh -c "sha256sum "{}" | tee "{}.sha256sum"" \;
+            
+        Verify checksums
+
+            sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z*.sha256sums"
 
     1. upload the archive with its checksum to the cloud, replacing current backup
 
         After the upload is complete, delete the local files
 
-            rm -rf "${HOME}/backup-sony_xa1/apps.7z"
-            rm -rf "${HOME}/backup-sony_xa1/apps/"
+            rm -rf "${HOME}/backup-moto_edge_30_pro/apps.7z*"
+            rm -rf "${HOME}/backup-moto_edge_30_pro/apps/"
     
-1. backup android browser tabs - `backup_and_restore_browser_tabs`
+1. backup android browser tabs - `backup_and_restore_browser_tabs` - Using `Vivaldi Sync` for the browser backup instead: http://login.vivaldi.net/profile/samlsso
 
     Enable `Debugging mode`.
 
@@ -60,13 +68,15 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 1. backup SMS and call history e.g. with app `SMS Backup & Restore`
     - set up local backup onto custom location - the root directory in internal memory
 
+1. backup Macrodroid macros via `Export/Import` button
+
 1. copy regulary used text files with the computer
 
     Enable `Debugging mode`.
 
-        gio trash "${HOME}/backup-sony_xa1/Phone/"
-        mkdir --parents "${HOME}/backup-sony_xa1/Phone/"
-        date && time adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-sony_xa1/Phone/" && date
+        gio trash "${HOME}/backup-moto_edge_30_pro/Phone/"
+        mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone/"
+        date && time adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-moto_edge_30_pro/Phone/" && date
         
     _Note: `adb pull` mode is preferred over MTP for copying because it preserves the timestamps and metadata of the files._
         
@@ -76,7 +86,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
     [OPTIONAL] ...or when copying the files via MTP instad of `adb pull` by compressing them with:
     
-        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-sony_xa1/docs_from_root_dir.7z" "${HOME}/backup-sony_xa1/Phone/*" && date
+        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/docs_from_root_dir.7z" "${HOME}/backup-moto_edge_30_pro/Phone/*" && date
         
     and uploading them as one file.
 
@@ -86,9 +96,9 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Back up files:
 
-        gio trash "${HOME}/backup-sony_xa1/Phone-complete/"
-        mkdir --parents "${HOME}/backup-sony_xa1/Phone-complete/"
-        date && time adb pull /storage/sdcard0/. "${HOME}/backup-sony_xa1/Phone-complete/" && date
+        gio trash "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
+        mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
+        date && time adb pull /sdcard/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
         
     _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
     
@@ -96,37 +106,39 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Compress files to an archive:
 
-        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-sony_xa1/Phone-complete.7z" "${HOME}/backup-sony_xa1/Phone-complete/" && date
+        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z" "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
 
     Check the multipart archive with
     
-        7z l Phone-complete.7z.001 | less
+        7z l Phone-complete.7z.001 | head --lines=40
         
     Generate checksums for each part of the archive (`Linux_utils_and_gists/generate_checksums_for_split_archive.sh "Phone-complete.7z.001"`)
     
-        find "${HOME}/backup-sony_xa1/" -name "Phone-complete.7z.[0-9]*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+        find "${HOME}/backup-moto_edge_30_pro/" -name "Phone-complete.7z.[0-9]*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.sha256sums"
 
-        80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-sony_xa1/Phone-complete.7z.001
-        854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-sony_xa1/Phone-complete.7z.002
+        80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-moto_edge_30_pro/Phone-complete.7z.001
+        854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-moto_edge_30_pro/Phone-complete.7z.002
 
-        cat "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+    Show contents of checksum file
 
-        80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-sony_xa1/Phone-complete.7z.001
-        854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-sony_xa1/Phone-complete.7z.002
+        cat "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.sha256sums"
+
+        80490c66985bdeadd5db295e65ede921e44406ee00c6dbc6bbbcfdf92d442a61  /home/laptop/backup-moto_edge_30_pro/Phone-complete.7z.001
+        854f1d2b061fb42f09e4585fc1fac8c8816f03a72a6c02c3b30322b053c49c9e  /home/laptop/backup-moto_edge_30_pro/Phone-complete.7z.002
 
     Verify checksums
 
-        sha256sum --check "${HOME}/backup-sony_xa1/Phone-complete.7z.sha256sums"
+        sha256sum --check "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.sha256sums"
 
-        /home/laptop/backup-sony_xa1/Phone-complete.7z.001: OK
-        /home/laptop/backup-sony_xa1/Phone-complete.7z.002: OK
+        /home/laptop/backup-moto_edge_30_pro/Phone-complete.7z.001: OK
+        /home/laptop/backup-moto_edge_30_pro/Phone-complete.7z.002: OK
 
     Upload the archives with the checksums to the cloud, respecting the 4GB file limit e.g. on Terabox.
 
-    Afterwards delete the `Phone-complete.7z.*` files and all directories inside `"${HOME}/backup-sony_xa1/Phone-complete/"` to save space on the drive.
+    Afterwards delete the `Phone-complete.7z.*` files and all directories inside `"${HOME}/backup-moto_edge_30_pro/Phone-complete/"` to save space on the drive.
 
-        rm -rf "${HOME}"/backup-sony_xa1/Phone-complete.7z.*
-        rm -rf "${HOME}"/backup-sony_xa1/Phone-complete/
+        rm -rf "${HOME}"/backup-moto_edge_30_pro/Phone-complete.7z.*
+        rm -rf "${HOME}"/backup-moto_edge_30_pro/Phone-complete/
 
     Notes on `Terabox` limitations:
     - Max size for uploaded file: 4GB
