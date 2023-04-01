@@ -20,7 +20,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 1. backup SMS and call history e.g. with app `SMS Backup & Restore`
     - set up local backup onto custom location - the root directory in internal memory
 
-1. backup Macrodroid macros via `Export/Import` button
+1. backup Macrodroid macros via `Export/Import` tile **and** `Automatic Backup -> Cloud Backup` tab
 
 1. backup android apps - `backup_and_restore_android_apps`
 
@@ -28,8 +28,31 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-moto_edge_30_pro/apps/" && date
         
-    Disable `Debugging mode`.
+1. `Android_tutorials` - files backup
 
+    Connect phone to the computer.
+
+    Enable `Debugging mode`.
+
+    Back up files:
+
+        gio trash "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
+        mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
+        date && time adb pull /sdcard/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
+        
+    _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
+    
+1. **[OPTIONAL]** backup android browser tabs - `backup_and_restore_browser_tabs` - Using `Vivaldi Sync` for the browser backup instead: http://login.vivaldi.net/profile/samlsso
+
+    Enable `Debugging mode`.
+
+        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh" && date
+        
+    Disable `Debugging mode`.
+    
+    Disconnect phone.
+
+1. Post-process backed up apk files
     1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
 
             date && time "${HOME}/git/kyberdrb/duplicate_finder/build-release.sh" && date
@@ -61,50 +84,10 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
             rm -rf "${HOME}/backup-moto_edge_30_pro/apps.7z*"
             rm -rf "${HOME}/backup-moto_edge_30_pro/apps/"
-    
-1. backup android browser tabs - `backup_and_restore_browser_tabs` - Using `Vivaldi Sync` for the browser backup instead: http://login.vivaldi.net/profile/samlsso
 
-    Enable `Debugging mode`.
+1. Post-process backed up files
 
-        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh" && date
-        
-    Disable `Debugging mode`.
-
-1. copy regulary used text files with the computer
-
-    Enable `Debugging mode`.
-
-        gio trash "${HOME}/backup-moto_edge_30_pro/Phone/"
-        mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone/"
-        date && time adb shell find /sdcard/ -maxdepth 1 -type f | xargs -I {} adb pull "{}" "/home/laptop/backup-moto_edge_30_pro/Phone/" && date
-        
-    _Note: `adb pull` mode is preferred over MTP for copying because it preserves the timestamps and metadata of the files._
-        
-    Disable `Debugging mode`.
-    
-    Upload the files to the cloud: Either directly [PREFERRED] one-by-one in bulk mode via multiple-selection upload...
-    
-    [OPTIONAL] ...or when copying the files via MTP instad of `adb pull` by compressing them with:
-    
-        date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/docs_from_root_dir.7z" "${HOME}/backup-moto_edge_30_pro/Phone/*" && date
-        
-    and uploading them as one file.
-
-1. `Android_tutorials` - files backup
-
-    Enable `Debugging mode`.
-
-    Back up files:
-
-        gio trash "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
-        mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
-        date && time adb pull /sdcard/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
-        
-    _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
-    
-    Disable `Debugging mode`.
-
-    Compress files to an archive:
+    Compress backed up files to an archive:
 
         date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z" "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
 
