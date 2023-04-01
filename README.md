@@ -2,55 +2,55 @@
 
 The complete mainenance guide with tools for sustainable and automated Arch Linux usage and adminstration
 
-1. backup contacts
-    - Open `Contacts` app and export all contacts into `vcf` format to the root directory of the internal phone storage.
+1. Back up internal app data to the phone
+    1. backup contacts
+        - Open `Contacts` app and export all contacts into `vcf` format to the root directory of the internal phone storage.
 
-1. Manually backup chat history for instant messaging apps
-    - WhatsApp: three dots -> Settings -> Chats -> Chat Backup, then click on `Back up` button to manually invoke the backup. I had `End-to-end encryption` option disabled.
-        - https://duckduckgo.com/?q=backup+whatsapp&ia=web
-        - https://faq.whatsapp.com/744445782709185/?cms_platform=android
-    - Viber - three dots in the bottom bar -> Settings -> Account -> Viber Backup, check options `Include photos` and `Include videos`, select the account for backup, then click on `Back up now` button
-        - https://duckduckgo.com/?q=backup+viber&ia=web
-        - https://mobiletrans.wondershare.com/viber/complete-viber-backup.html
-    - Messenger - not necessary: the chat history is automatically loaded at the first login onto the new device
-        - click on the avatar in the top left corner -> Settings -> Download copy
-    - Signal: backup successfully created, but the recovery failed
-        - screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
+    1. Manually backup chat history for instant messaging apps
+        - WhatsApp: three dots -> Settings -> Chats -> Chat Backup, then click on `Back up` button to manually invoke the backup. I had `End-to-end encryption` option disabled.
+            - https://duckduckgo.com/?q=backup+whatsapp&ia=web
+            - https://faq.whatsapp.com/744445782709185/?cms_platform=android
+        - Viber - three dots in the bottom bar -> Settings -> Account -> Viber Backup, check options `Include photos` and `Include videos`, select the account for backup, then click on `Back up now` button
+            - https://duckduckgo.com/?q=backup+viber&ia=web
+            - https://mobiletrans.wondershare.com/viber/complete-viber-backup.html
+        - Messenger - not necessary: the chat history is automatically loaded at the first login onto the new device
+            - click on the avatar in the top left corner -> Settings -> Download copy
+        - Signal: backup successfully created, but the recovery failed
+            - screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
 
-1. backup SMS and call history e.g. with app `SMS Backup & Restore`
-    - set up local backup onto custom location - the root directory in internal memory
+    1. backup SMS and call history e.g. with app `SMS Backup & Restore`
+        - set up local backup onto custom location - the root directory in internal memory
 
-1. backup Macrodroid macros via `Export/Import` tile **and** `Automatic Backup -> Cloud Backup` tab
+    1. backup Macrodroid macros via `Export/Import` tile **and** `Automatic Backup -> Cloud Backup` tab
 
-1. backup android apps - `backup_and_restore_android_apps`
+1. Backup with connected device
+    1. backup android apps - `backup_and_restore_android_apps`
 
-    Enable `Debugging mode`.
+        Connect phone to the computer.
 
-        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-moto_edge_30_pro/apps/" && date
-        
-1. `Android_tutorials` - files backup
+        Enable `Debugging mode`.
 
-    Connect phone to the computer.
+            date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_android_apps/backup_apps.sh" "${HOME}/backup-moto_edge_30_pro/apps/" && date
 
-    Enable `Debugging mode`.
+    1. `Android_tutorials` - files backup
 
-    Back up files:
+        Back up files:
 
-        gio trash "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
-        mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
-        date && time adb pull /sdcard/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
-        
-    _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
-    
-1. **[OPTIONAL]** backup android browser tabs - `backup_and_restore_browser_tabs` - Using `Vivaldi Sync` for the browser backup instead: http://login.vivaldi.net/profile/samlsso
+            gio trash "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
+            mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
+            date && time adb pull /sdcard/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
 
-    Enable `Debugging mode`.
+        _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
 
-        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh" && date
-        
-    Disable `Debugging mode`.
-    
-    Disconnect phone.
+    1. **[OPTIONAL]** backup android browser tabs - `backup_and_restore_browser_tabs` - Using `Vivaldi Sync` for the browser backup instead: http://login.vivaldi.net/profile/samlsso
+
+        Enable `Debugging mode`.
+
+            date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_and_restore_browser_tabs/backup_tabs-Via_browser_by_Tu_Yafeng.sh" && date
+
+        Disable `Debugging mode`.
+
+        Disconnect phone.
 
 1. Post-process backed up apk files
     1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
