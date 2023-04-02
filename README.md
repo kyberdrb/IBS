@@ -178,7 +178,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     1. Check the logs with following command. The program will tell you where the logs are. For example:
     
-                less "${HOME}/.config/cpmcd/logs/2022_10_10-14_23_52.log"
+            less "$(find "${HOME}/.config/cpmcd/logs/" | sort --reverse | head --lines=1)"
     
     1. Now run the program again, but with elevated priviledges, to allow moving files:
 
@@ -186,7 +186,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         Check the logs again, if you want to see what files had been moved.
         
-            less "${HOME}/.config/cpmcd/logs/2022_10_10-14_38_09.log"
+            less "$(find "${HOME}/.config/cpmcd/logs/" | sort --reverse | head --lines=1)"
 
     1. Delete the package files directory:
 
