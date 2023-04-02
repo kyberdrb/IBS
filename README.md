@@ -65,9 +65,17 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     1. compress the `apps` directory
 
             date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/apps.7z" "${HOME}/backup-moto_edge_30_pro/apps/" && date
+            
+    1. **[OPTIONAL]** If only single archive gets created, rename the archive to a standard `.7z` extension
+
+            mv "${HOME}/backup-moto_edge_30_pro/apps.7z.001" "${HOME}/backup-moto_edge_30_pro/apps.7z"
 
     1. Check the multipart archive with
     
+            7z l apps.7z | head --lines=40
+        
+        or
+
             7z l apps.7z.001 | head --lines=40
 
     1. generate checksums to verify backup integrity in case of restoring the backup (`Linux_utils_and_gists/generate_checksum "apps.7z"`)
@@ -76,7 +84,11 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
             
         Verify checksums
 
-            sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z*.sha256sums"
+            sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z.sha256sum"
+            
+        or
+
+            sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z*.sha256sum"
 
     1. upload the archive with its checksum to the cloud, replacing current backup
 
@@ -95,7 +107,11 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
         7z l Phone-complete.7z.001 | head --lines=40
         
-    Generate checksums for each part of the archive (`Linux_utils_and_gists/generate_checksums_for_split_archive.sh "Phone-complete.7z.001"`)
+    Generate checksums for each part of the archive
+    
+        Linux_utils_and_gists/generate_checksums_for_split_archive.sh "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.001"
+    
+    or
     
         find "${HOME}/backup-moto_edge_30_pro/" -name "Phone-complete.7z.[0-9]*" | sort | xargs -I "{}" sha256sum "{}" | tee "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.sha256sums"
 
@@ -129,6 +145,12 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     - The download of multi-file has an upper limit of 500MB, while the download of a single file is not limited
 
 1. sync git repos - `git_manage_all_repositories`
+
+        git_status_all
+        
+        # git add + commit + push for each unclean repo
+        
+        git_pull_all
 
 1. Check the status of every repository
 
