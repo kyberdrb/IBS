@@ -5,6 +5,9 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 1. Back up internal app data to the phone
     1. backup contacts
         - Open `Contacts` app and export all contacts into `vcf` format to the root directory of the internal phone storage.
+    
+    1. backup SMS and call history e.g. with app `SMS Backup & Restore`
+        - set up local backup onto custom location - the root directory in internal memory
 
     1. Manually backup chat history for instant messaging apps
         - WhatsApp: three dots -> Settings -> Chats -> Chat Backup, then click on `Back up` button to manually invoke the backup. I had `End-to-end encryption` option disabled.
@@ -18,10 +21,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         - Signal: backup successfully created, but the recovery failed
             - screenshot of the password -> adb pull to PC -> crop the password from the screenshot -> do an OCR on the cropped image to a text file -> remove any newlines from the text file -> push the text file back to the root dir on the internal storage of the phone as "signal-backup_password.txt"
 
-    1. backup SMS and call history e.g. with app `SMS Backup & Restore`
-        - set up local backup onto custom location - the root directory in internal memory
-
     1. backup Macrodroid macros via `Export/Import` tile **and** `Automatic Backup -> Cloud Backup` tab
+    1. backup Locus points and tracks
 
 1. Backup with connected device
     1. backup android apps - `backup_and_restore_android_apps`
@@ -38,9 +39,21 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
             gio trash "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
             mkdir --parents "${HOME}/backup-moto_edge_30_pro/Phone-complete/"
-            date && time adb pull /sdcard/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/" && date
+            
+            date && time adb shell "find /sdcard/ -maxdepth 1 -type f" | grep --invert-match "^Android$" | sort | xargs -d $'\n' sh -c 'for arg do echo "Backing up "$arg""; adb pull "$arg" "${HOME}/backup-moto_edge_30_pro/Phone-complete/";  echo ""; done' _ && date
+            
+            date && time adb shell "find /sdcard/ -maxdepth 1 -mindepth 1 -type d" | grep --invert-match "Android$" | sort | xargs -d $'\n' sh -c 'for arg do echo "Backing up "$arg""; BACKED_UP_DIR="$(echo "$arg" | rev | cut --delimiter="/" --fields=1 | rev)"; mkdir "${HOME}/backup-moto_edge_30_pro/Phone-complete/${BACKED_UP_DIR}"; adb pull "$arg"/. "${HOME}/backup-moto_edge_30_pro/Phone-complete/${BACKED_UP_DIR}"; echo ""; done' _ && date
 
         _Note: the dot `.` at the end of the source path for the `adb pull` makes the `pull` command copy the files **recursively**_
+        
+        - https://duckduckgo.com/?q=xargs+execute+multiple+commands&ia=web&iax=qa
+        - https://stackoverflow.com/questions/6958689/running-multiple-commands-with-xargs
+        - https://stackoverflow.com/questions/6958689/running-multiple-commands-with-xargs/6958957#6958957
+        - https://duckduckgo.com/?q=adb+pull+space+failed+to+stat&ia=web
+        - https://android.stackexchange.com/questions/185951/script-to-pull-from-directory-containing-spaces
+        - https://android.stackexchange.com/questions/185951/script-to-pull-from-directory-containing-spaces/185952#185952
+        - https://android.stackexchange.com/questions/185951/script-to-pull-from-directory-containing-spaces/185955#185955
+            - surround **only** the variable in doublequotes, e.g not `""$arg"./"` but `"$arg"./`
 
     1. **[OPTIONAL]** backup android browser tabs - `backup_and_restore_browser_tabs` - Using `Vivaldi Sync` for the browser backup instead: http://login.vivaldi.net/profile/samlsso
 
