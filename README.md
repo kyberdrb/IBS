@@ -79,7 +79,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
             date && time 7z a -t7z -mx=9 -ms=on -mf=on -mhc=on -mhe=on -m0=lzma2 -mfb=273 -md=64m -v4g "-pMY SUPER STRONK CLOUD PASSWORD" "${HOME}/backup-moto_edge_30_pro/apps.7z" "${HOME}/backup-moto_edge_30_pro/apps/" && date
             
-    1. **[OPTIONAL]** If only single archive gets created, rename the archive to a standard `.7z` extension
+    1. If only single archive gets created, rename the archive to a standard `.7z` extension
 
             mv "${HOME}/backup-moto_edge_30_pro/apps.7z.001" "${HOME}/backup-moto_edge_30_pro/apps.7z"
 
