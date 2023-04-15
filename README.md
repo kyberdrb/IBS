@@ -91,17 +91,21 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
             7z l apps.7z.001 | head --lines=40
 
-    1. generate checksums to verify backup integrity in case of restoring the backup (`Linux_utils_and_gists/generate_checksum "apps.7z"`)
+    1. generate checksums to verify backup integrity in case of restoring the backup
 
             find "${HOME}/backup-moto_edge_30_pro/" -type f -name "apps.7z*" -exec sh -c "sha256sum "{}" | tee "{}.sha256sum"" \;
             
-        Verify checksums
+        or
+        
+            Linux_utils_and_gists/generate_checksums_for_split_archive.sh "${HOME}/backup-moto_edge_30_pro/apps.7z"
+            
+     1. Verify checksums
 
             sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z.sha256sum"
             
         or
 
-            sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z*.sha256sum"
+            sha256sum --check "${HOME}/backup-moto_edge_30_pro/apps.7z.sha256sums"
 
     1. upload the archive with its checksum to the cloud, replacing current backup
 
@@ -122,7 +126,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         
     Generate checksums for each part of the archive
     
-        Linux_utils_and_gists/generate_checksums_for_split_archive.sh "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.001"
+        "${HOME}/git/kyberdrb/Linux_utils_and_gists/generate_checksums_for_split_archive.sh" "${HOME}/backup-moto_edge_30_pro/Phone-complete.7z.001"
     
     or
     
