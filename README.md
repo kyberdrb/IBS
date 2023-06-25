@@ -24,7 +24,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     1. backup Macrodroid macros via `Export/Import` tile **and** `Automatic Backup -> Cloud Backup` tab
     1. backup Locus points and tracks
 
-1. Backup with connected device
+1. Backup phone with connected device - **already automated with [`https://github.com/kyberdrb/Android_tutorials/blob/master/backup_android_files.sh`]**
     1. backup android apps - `backup_and_restore_android_apps`
 
         Connect phone to the computer.
@@ -85,8 +85,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     1. Check the multipart archive with
     
-            7z l apps.7z | head --lines=40
-        
+            7z l "$(find "${HOME}/backup-moto_edge_30_pro/" -maxdepth 1 -type f -name "apps.7z*" | head --lines=1)"        
         or
 
             7z l apps.7z.001 | head --lines=40
@@ -122,7 +121,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
     Check the multipart archive with
     
-        7z l Phone-complete.7z.001 | head --lines=40
+        7z l "$(find "${HOME}/backup-moto_edge_30_pro/" -maxdepth 1 -type f -name "Phone-complete.7z*" | sort | head --lines=1)"
         
     Generate checksums for each part of the archive
     
