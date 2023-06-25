@@ -159,28 +159,26 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     - Max size for uploaded file: 4GB
     - Max number of files uploaded at once: 500
     - The download of multi-file has an upper limit of 500MB, while the download of a single file is not limited
+  
+1. Clean up backed up files
+    1. delete the apps directory
+    1. from the Phone-complete directory delete all directories - leave only files
 
-1. sync git repos - `git_manage_all_repositories`
+1. sync git repositorier - `git_manage_all_repositories`
 
-        git_status_all
-        
-        # git add + commit + push for each unclean repo
-        
-        git_pull_all
-
-1. Check the status of every repository
-
-        date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/" && date
-
-    Commit & Push all changes in all modified repositories one-by-one and manually, to have things under control
-
-1. After pushing all changes, check the status again, to make sure all repositories are in consistent and up-to-date state
-
-        date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/" && date
-
-1. Pull all changes from the upstream for all repositories to sync changes to the local machine for files in such repositories that I usually update online via GitHub editor
-
-        date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh" "${HOME}/git/" && date
+    1. Check the status of every repository
+    
+            date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/" && date
+    
+        Commit & Push all changes in all modified repositories one-by-one and manually, to have things under control
+    
+    1. After pushing all changes, check the status again, to make sure all repositories are in consistent and up-to-date state
+    
+            date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_status_all.sh" "${HOME}/git/" && date
+    
+    1. Pull all changes from the upstream for all repositories to sync changes to the local machine for files in such repositories that I usually update online via GitHub editor
+    
+            date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh" "${HOME}/git/" && date
 
 1. `clean_pacman_cache_dir` - to reduce the backup size for Clonezilla as much as possible
 
@@ -208,7 +206,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         First, check free space with
         
-            df -h
+            df --human-readable
+            du --summarize --human-readable "/var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/"
             
         Delete the package files directory
 
@@ -216,7 +215,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 
         Gained free space on disk, thus less time during cloning. Check again with
         
-            df -h
+            df --human-readable
+            du --summarize --human-readable "/var/cache/pacman/pkg/PACKAGE_FILES_FOR_VERSIONS_OTHER_THAN_LOCALLY_INSTALLED/"
 
 1. `clonezilla_bootable_uefi_usb_creator` - backup entire harddrive by clonning
 
