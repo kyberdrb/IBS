@@ -27,9 +27,15 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
 1. Backup phone with connected device - **already automated with [`backup_android_files.sh`](https://github.com/kyberdrb/Android_tutorials/blob/master/backup_android_files.sh)**
     - usage:
   
-      ```
-      backup_android_files.sh "super silne heslisko!!"
-      ```
+        Connect phone to the computer.
+
+        **Enable `Debugging mode`.**
+  
+        ```
+        "${HOME}/git/kyberdrb/Android_tutorials/backup_android_files.sh" "super silne heslisko!!"
+        ```
+
+    ---
       
     1. backup android apps - `backup_and_restore_android_apps`
 
