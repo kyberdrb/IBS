@@ -32,7 +32,7 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         **Enable `Debugging mode`.**
   
         ```
-        "${HOME}/git/kyberdrb/Android_tutorials/backup_android_files.sh" "super silne heslisko!!"
+        date && time "${HOME}/git/kyberdrb/Android_tutorials/backup_android_files.sh" "super silne heslisko!!" && date
         ```
 
     ---
