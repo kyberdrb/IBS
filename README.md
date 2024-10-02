@@ -192,6 +192,28 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     
             date && time "${HOME}/git/kyberdrb/git_manage_all_repositories/git_pull_all.sh" "${HOME}/git/" && date
 
+1. Delete Valgrind memory dumps
+
+    ```
+    find . -regex ".*vgcore.*" 2>/dev/null | xargs du --human-readable
+    find . -regex ".*vgcore.*" 2>/dev/null | xargs du
+    df --human-readable
+    df
+    find . -regex ".*vgcore.*" 2>/dev/null | xargs rm
+    df
+    df --human-readable
+    ```
+
+1. Delete other log files
+
+    ```
+    sudo rm /etc/pacman.conf-*
+
+    du -sh /home/laptop/.config/cpmcd/logs
+    find /home/laptop/.config/cpmcd/logs/ -group users -type f -exec rm {} \;
+    du -sh /home/laptop/.config/cpmcd/logs
+    ```
+
 1. `clean_pacman_cache_dir` - to reduce the backup size for Clonezilla as much as possible
 
     1. Build it
@@ -209,6 +231,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     1. Now run the program again, but with elevated priviledges, to allow moving files:
 
             date && time sudo "${HOME}/git/kyberdrb/clean_pacman_cache_dir/cmake-build-release/clean_pacman_cache_dir" && date
+  
+        **_Note_**: For more thorough cleaning comment out `HoldPkg` and `IgnoredPkg` lines in `/etc/pacman.conf`
 
         Check the logs again, if you want to see what files had been moved.
         
