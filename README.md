@@ -2,6 +2,8 @@
 
 The complete mainenance guide with tools for sustainable and automated Arch Linux usage and adminstration
 
+## Prepare files for backup on the phone
+
 1. Back up internal app data to the phone
     1. backup contacts
         - Open `Contacts` app and export all contacts into `vcf` format to the root directory of the internal phone storage.
@@ -24,6 +26,22 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
     1. backup Macrodroid macros via `Export/Import` tile **and** `Automatic Backup -> Cloud Backup` tab
     1. backup Locus points and tracks
 
+## Backup phone content to PC
+
+1. Backup phone via SFTP server...
+    - because USB connection might be broken and ADB might not kick in `adb devices` . Wireless connection might be slower and less stable, or slower but more stable. But also unstable can be an USB connection in a laggy port or even no connection when Android doesn't recognize that it's connected to a PC.
+
+    Procedure
+
+    1. install app `SFTP Server` on the Android phone
+    1. install `Filezilla` on the PC.
+    1. On the phone: start a Wi-Fi hotspot, open the app; set it up; launch it - transferring via hotspot Wi-Fi network reaches speed cca 60 MB/s whereas transferring via router goes cca 20MB/s
+    1. open Filezilla on the PC; set it up: Edit -> Settings -> Transfers: Maximum simultaneous transfers = 10 -> confirm settings by clicking on `OK` button in the left bottom corner
+    1. enter credentials, IP address and port from the phone, e.g. `sftp://192.168.60.252` ; `android` ; `<enter password from the app>` ; `6789` and then click on `Quickconnect` button -> accept certificate
+    1. In the tree view pane on the left hand site navigate to a directory which the backed up files will be stored into.
+    1. In the `Remote site` line in the tree view panel on the right hand side enter path `/storage/emulated/0` . The path needs to be entered manually as the 
+    1. Select all needed files and directories, right click on any of the marked one and select `Download` option from the context menu. Wait until all files will be downloaded to the directory opened in the tree view in the pane on the left hand site. **Make sure the available storage space is sufficient to hold the entire backup (with the archive)**
+    
 1. Backup phone with connected device - **already automated with [`backup_android_files.sh`](https://github.com/kyberdrb/Android_tutorials/blob/master/backup_android_files.sh)**
     - usage:
   
@@ -76,6 +94,8 @@ The complete mainenance guide with tools for sustainable and automated Arch Linu
         Disable `Debugging mode`.
 
         Disconnect phone.
+
+## Post-process backed up files on PC
 
 1. Post-process backed up apk files
     1. **[OPTIONAL - SKIP IF THE `apps` DIR IS NEWLY CREATED]** find duplicates in the directory with backed up apps - `duplicate_finder`
